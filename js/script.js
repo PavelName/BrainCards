@@ -1,4 +1,6 @@
+import {createCategories} from './components/createCategory.js';
 import { createHeader } from './components/createHeader.js';
+import { createElement } from './helper/createElement.js';
 import { fetchCatigories } from './service/api.service.js';
 
 const initApp = async () => {
@@ -7,9 +9,19 @@ const initApp = async () => {
     const app = document.querySelector('#app');
 
     const headerObj = createHeader(headerParent);
+    const categoryObj = createCategories(app);
+    console.log('categoryObj:', categoryObj)
     
     const categories = await fetchCatigories();
-    console.log('categories:', categories);
+    if (categories.error) {
+        app.append(createElement('p', {
+            className: 'server-error',
+            textContent: 'Ошибка сервера!'
+        }));
+        return;
+    };
+
+
 
     const returnIndex = e => {
         e.preventDefault();
