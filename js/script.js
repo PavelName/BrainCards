@@ -10,27 +10,29 @@ const initApp = async () => {
 
     const headerObj = createHeader(headerParent);
     const categoryObj = createCategories(app);
-    console.log('categoryObj:', categoryObj)
     
-    const categories = await fetchCatigories();
+
+
+    const renderIndex = async e => {
+        e?.preventDefault();
+        const categories = await fetchCatigories();
+
     if (categories.error) {
         app.append(createElement('p', {
             className: 'server-error',
             textContent: 'Ошибка сервера!'
         }));
+        app.append(errorText);
         return;
     };
-
-
-
-    const returnIndex = e => {
-        e.preventDefault();
-        headerObj.updateHeaderTitle('Категории');
+    categoryObj.mount(categories);
     };
+    renderIndex();
 
-    headerObj.headerLogoLink.addEventListener('click', returnIndex);
+    headerObj.headerLogoLink.addEventListener('click', renderIndex);
 
     headerObj.headerBtn.addEventListener('click', () => {
+        categoryObj.unmount();
         headerObj.updateHeaderTitle('Новая категория');
     });
 
