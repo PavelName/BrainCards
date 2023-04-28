@@ -41,34 +41,79 @@ export const createEditCategory = (app) => {
         });
 
 
+        const tbody = createElement('tbody');
+
+        const btnWrapper = createElement('div', {
+            className: 'edit__btn-wrapper',
+        });
+
+        const btnAddRow = createElement('button', {
+            className: 'edit__btn edit__add-row',
+            textContent: 'Добавить пару',
+        })
 
 
-    /**
-     * 
-        
-          <thead>
-            <tr>
-              <th class="table__cell">main</th>
-              <th class="table__cell">second</th>
-              <th class="table__cell"></th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td class="table__cell table__cell_one" contenteditable="true">брат</td>
-              <td class="table__cell table__cell_two" contenteditable="true">brother</td>
-              <td class="table__cell"><button class="table__del">x</button></td>
-            </tr>
-          </tbody>
-        </table>
-        <div class="edit__btn-wrapper">
-          <button class="edit__btn edit__add-row">Добавить пару</button>
-          <button class="edit__btn edit__save" data-id="bczp358gktzy">Сохранить категорию</button>
-          <button class="edit__btn edit__cancel">Отмена</button>
-        </div>
-      </div>
-    </section>
-     */
+        const btnSave = createElement('button', {
+            className: 'edit__btn edit__save',
+            textContent: 'Сохранить категорию',
+        });
+
+        const btnCancel = createElement('button', {
+            className: 'edit__btn edit__cancel',
+            textContent: 'Отмена',
+        });
+
+
+        const createTRCell = (dataArr) => {
+            const tr = createElement('tr');
+
+
+            const tableCellMain = createElement('th', {
+                className: 'table__cell table__cell_one',
+                textContent: dataArr[0],
+                contenteditable: 'true',
+            });
+    
+            const tableCellSecond = createElement('th', {
+                className: 'table__cell table__cell_two',
+                textContent: dataArr[1],
+                contenteditable: 'true',
+            });
+    
+            const tableCellDel = createElement('th', {
+                className: 'table__cell',
+                
+            });
+
+            const delRow = createElement('button', {
+                className:'table__del',
+                textContent:'x',
+            });
+
+            delRow.addEventListener('click', () => {
+
+                if (confirm('вы уверены что хотите удалить строку?')) {
+                    tr.remove();
+                }
+               
+            });
+
+            tableCellDel.append(delRow);
+            tr.append(tableCellMain, tableCellSecond, tableCellDel);
+
+            return tr;
+
+        };
+
+        editCategory.append(container);
+        btnWrapper.append(btnAddRow, btnCancel, btnSave);
+        table.append(thead, tbody);
+        thead.append(trThead);
+        trThead.append(tableHeadCellMain, tableHeadCellSecond, tableHeadCellEmpty);
+        container.append(title, table, btnWrapper);
+
+
+    
 
     const mount = () => {
 
