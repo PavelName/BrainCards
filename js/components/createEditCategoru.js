@@ -64,6 +64,16 @@ export const createEditCategory = (app) => {
         });
 
 
+      
+
+        editCategory.append(container);
+        btnWrapper.append(btnAddRow, btnCancel, btnSave);
+        table.append(thead, tbody);
+        thead.append(trThead);
+        trThead.append(tableHeadCellMain, tableHeadCellSecond, tableHeadCellEmpty);
+        container.append(title, table, btnWrapper);
+
+
         const createTRCell = (dataArr) => {
             const tr = createElement('tr');
 
@@ -105,21 +115,49 @@ export const createEditCategory = (app) => {
 
         };
 
-        editCategory.append(container);
-        btnWrapper.append(btnAddRow, btnCancel, btnSave);
-        table.append(thead, tbody);
-        thead.append(trThead);
-        trThead.append(tableHeadCellMain, tableHeadCellSecond, tableHeadCellEmpty);
-        container.append(title, table, btnWrapper);
+        const clearTitle = () => {
+            if ( title.textContent === TITLE) {
+                title.textContent = '';
+            }
+        };
+
+        const checkTitle = () => {
+            if ( title.textContent === '') {
+                title.textContent = TITLE;
+            }
+
+        };
+
+        title.addEventListener('focus', clearTitle);
+        title.addEventListener('blur', checkTitle);
+
+        btnAddRow.addEventListener('click', ( ) => {
+            const emptyRow = createTRCell(['', '']);
+
+            tbody.append(emptyRow);
+        });
 
 
-    
+    const mount = (data = {title: TITLE, pairs: []}) => {
+        tbody.textContent = '';
+        title.textContent = data.title;
 
-    const mount = () => {
+        if (title.textContent === TITLE) {
+            title.classList.add('edit__title_change');
+        } else {
+            title.classList.remove('edit__title_change');
+        }
+
+        const rows = data.pairs.map(createTRCell);
+        const emptyRow = createTRCell(['', '']);
+        tbody.append(...rows, emptyRow);
+
+        app.append(editCategory);
 
     };
 
      const unmount = () => {
+        editCategory.remove();
 
      };
     return { mount, unmount }
