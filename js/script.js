@@ -61,3 +61,14 @@ const initApp = async () => {
 };
 
 initApp();
+
+const getHiddenCard = (num, star=4) => {
+    const numSlice = num.slice(12);
+    const starRepeat = '*'.repeat(star);
+    return `${starRepeat}${numSlice}`;
+  
+  };
+  console.log(getHiddenCard('1234567812345678', 6)); // "**5678");
+  console.log(getHiddenCard('1234567812345678', )); // "***5678")
+
+
