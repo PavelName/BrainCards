@@ -62,6 +62,10 @@ const initApp = async () => {
 
 initApp();
 
-
-
+const isInternationalPhone =(form) => {
+    const firstSimb = form[0] === '+';
+    return firstSimb ;
+  }
+console.log(isInternationalPhone('+89602223423'));
+console.log(isInternationalPhone('89602223423'));
 
