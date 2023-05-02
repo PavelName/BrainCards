@@ -62,4 +62,16 @@ const initApp = async () => {
 
 initApp();
 
+ const getTypeSentense = (sentense) => {
+     const getSent = sentense[sentense.length -1];
+     if (getSent === '?') {
+        return 'question';
+     }
+     return 'general;'
+ };
+
+ console.log(getTypeSentense('Honor?'));
+ console.log(getTypeSentense('Honor'))
+
+
 
