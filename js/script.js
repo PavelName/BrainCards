@@ -12,9 +12,10 @@ const initApp = async () => {
     const headerObj = createHeader(headerParent);
     const categoryObj = createCategories(app);
     const editCategoryObj = createEditCategory(app);
+    const pairsObj = createPairs(app);
 
     const allSectionUnmount = () => {
-        [categoryObj, editCategoryObj].forEach(obj => obj.unmount());
+        [categoryObj, editCategoryObj, pairsObj].forEach(obj => obj.unmount());
     };
 
 
