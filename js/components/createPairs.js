@@ -2,8 +2,13 @@ import { createElement } from "../helper/createElement.js"
 
 export const createPairs = (app) => {
     const pairs = createElement('section', {
+        className: 'card section-offset',
+    });
 
-    })
+    const container = createElement('div', {
+        className: 'container card__container',
+    });
+    
 
 };
 
