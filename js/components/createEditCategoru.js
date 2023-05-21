@@ -78,13 +78,13 @@ export const createEditCategory = (app) => {
             const tr = createElement('tr');
 
 
-            const tableCellMain = createElement('th', {
+            const tableCellMain = createElement('td', {
                 className: 'table__cell table__cell_one',
                 textContent: dataArr[0],
                 contenteditable: 'true',
             });
     
-            const tableCellSecond = createElement('th', {
+            const tableCellSecond = createElement('td', {
                 className: 'table__cell table__cell_two',
                 textContent: dataArr[1],
                 contenteditable: 'true',
@@ -133,9 +133,33 @@ export const createEditCategory = (app) => {
 
         btnAddRow.addEventListener('click', ( ) => {
             const emptyRow = createTRCell(['', '']);
-
             tbody.append(emptyRow);
         });
+
+        const parseData = () => {
+            const cellsMain = document.querySelectorAll('.table__cell_one');
+            const cellsSecond = document.querySelectorAll('.table__cell_two');
+
+            const data = {
+                pairs: [],
+            };
+
+            for (let i = 0; i < cellsMain.length; i += 1) {
+                const textMain = cellsMain[i].textContent.trim();
+                const textSecond = cellsSecond[i].textContent.trim();
+                if (textMain && textSecond) {
+                    data.pairs[i] = [textMain, textSecond];
+                }
+            }
+            if (title.textContent.trim() && title.textContent !== TITLE) {
+                data.title = title.textContent.trim();
+            }
+            if (btnSave.dataset.id) {
+                data.id = btnSave.dataset.id;
+            }
+
+            return data;
+        }
 
 
     const mount = (data = {title: TITLE, pairs: []}) => {
@@ -152,6 +176,8 @@ export const createEditCategory = (app) => {
         const emptyRow = createTRCell(['', '']);
         tbody.append(...rows, emptyRow);
 
+        btnSave.dataset.id = data.id ? data.id : '';
+
         app.append(editCategory);
 
     };
@@ -160,5 +186,5 @@ export const createEditCategory = (app) => {
         editCategory.remove();
 
      };
-    return { mount, unmount }
+    return { mount, unmount, parseData, btnSave, btnCancel }
 };

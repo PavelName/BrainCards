@@ -2,6 +2,7 @@ import {createCategories} from './components/createCategory.js';
 import { createEditCategory } from './components/createEditCategoru.js';
 import { createHeader } from './components/createHeader.js';
 import {createPairs} from './components/createPairs.js';
+import { showAlert } from './components/showAlert.js';
 import { createElement } from './helper/createElement.js';
 import { fetchCards, fetchCatigories } from './service/api.service.js';
 
@@ -17,6 +18,36 @@ const initApp = async () => {
 
     const allSectionUnmount = () => {
         [categoryObj, editCategoryObj, pairsObj].forEach(obj => obj.unmount());
+    };
+
+    const postHandler = () => {
+        const data = editCategoryObj.parseData();
+        const dataCategory = fetchCreateCategory(data);
+
+        if (dataCategory.error) {
+            showAlert(dataCategory.error.messege);
+            return
+        }
+
+        showAlert(`Новая категория${data.title}была добавлена`);
+        allSectionUnmount();
+        headerObj.updateHeaderTitle('Категории');
+        categoryObj.mount(dataCategory);
+    };
+
+    const patchHandler = () => {
+        const data = editCategoryObj.parseData();
+        const dataCategory = fetchEditCategory(id, data);
+
+        if (dataCategory.error) {
+            showAlert(dataCategory.error.messege);
+            return
+        }
+
+        showAlert(`Категория${data.title}обновлена`);
+        allSectionUnmount();
+        headerObj.updateHeaderTitle('Категории');
+        categoryObj.mount(dataCategory);
     };
 
 
@@ -44,6 +75,8 @@ const initApp = async () => {
         allSectionUnmount();
         headerObj.updateHeaderTitle('Новая категория');
         editCategoryObj.mount();
+        editCategoryObj.btnSave.addEventListener('click', postHandler);
+        editCategoryObj.btnSave.removeEventListener('click', patchHandler);
     });
 
     categoryObj.categoryList.addEventListener('click', async ({ target }) => {
@@ -55,6 +88,8 @@ const initApp = async () => {
             allSectionUnmount();
             headerObj.updateHeaderTitle('Редактирование');
             editCategoryObj.mount(dataCards);
+            editCategoryObj.btnSave.addEventListener('click', patchHandler);
+            editCategoryObj.btnSave.removeEventListener('click', postHandler);
             return;
         }
         

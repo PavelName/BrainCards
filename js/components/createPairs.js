@@ -73,8 +73,9 @@ export const createPairs = (app) => {
 
     const mount = data => {
         app.append(pairs);
-        cardControler(data.pairs);
-        shuffleArray(data.pairs);
+        const newDate = shuffleArray(data.pairs);
+        cardControler(newDate);
+        
     };
 
     const unmount = () => {

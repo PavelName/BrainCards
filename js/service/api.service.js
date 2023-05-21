@@ -31,3 +31,22 @@ export const fetchCards = async id => {
         return {error};
     };
 };
+
+export const fetchCreateCategory = async data => {
+    try {
+        const response = await fetch(`${API_URL}/api/category/${id}`, {
+            method: 'post',
+            body: JSON.stringify(data),
+        });
+
+        if (!(response.status === 200 || response.status === 201)) {
+            const error = await response.json();
+            throw error;
+        } 
+        const cards =await response.json();
+        return cards;
+
+    } catch (error) {
+        return {error};
+    };
+};
