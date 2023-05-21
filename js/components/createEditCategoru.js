@@ -148,7 +148,7 @@ export const createEditCategory = (app) => {
                 const textMain = cellsMain[i].textContent.trim();
                 const textSecond = cellsSecond[i].textContent.trim();
                 if (textMain && textSecond) {
-                    data.pairs[i] = [textMain, textSecond];
+                    data.pairs.push([textMain, textSecond]);
                 }
             }
             if (title.textContent.trim() && title.textContent !== TITLE) {

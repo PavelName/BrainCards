@@ -4,7 +4,7 @@ import { createHeader } from './components/createHeader.js';
 import {createPairs} from './components/createPairs.js';
 import { showAlert } from './components/showAlert.js';
 import { createElement } from './helper/createElement.js';
-import { fetchCards, fetchCatigories } from './service/api.service.js';
+import { fetchCards, fetchCatigories, fetchCreateCategory, fetchDeleteCategory } from './service/api.service.js';
 
 const initApp = async () => {
 
@@ -20,9 +20,9 @@ const initApp = async () => {
         [categoryObj, editCategoryObj, pairsObj].forEach(obj => obj.unmount());
     };
 
-    const postHandler = () => {
+    const postHandler = async () => {
         const data = editCategoryObj.parseData();
-        const dataCategory = fetchCreateCategory(data);
+        const dataCategory = await fetchCreateCategory(data);
 
         if (dataCategory.error) {
             showAlert(dataCategory.error.messege);
@@ -35,9 +35,12 @@ const initApp = async () => {
         categoryObj.mount(dataCategory);
     };
 
-    const patchHandler = () => {
+    const patchHandler = async () => {
         const data = editCategoryObj.parseData();
-        const dataCategory = fetchEditCategory(id, data);
+        const dataCategory = await fetchEditCategory(
+            editCategoryObj.btnSave. dataset.id, 
+            data,
+            );
 
         if (dataCategory.error) {
             showAlert(dataCategory.error.messege);
@@ -94,7 +97,18 @@ const initApp = async () => {
         }
         
         if (target.closest('.category__del')) {
-            console.log('Delite');
+            if (confirm ('Вы уверены?')) {
+                const result = fetchDeleteCategory(categoryItem.dataset.id);
+
+                if (result.error) {
+                    showAlert(result.error.messege);
+                    return;
+                }
+
+                showAlert ('Категория удалена!');
+                categoryItem.remove();
+            }
+            
             return;
         }
 
